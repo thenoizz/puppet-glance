@@ -29,6 +29,11 @@ class glance(
       tag    => ['openstack', 'glance-package'],
     }
   }
-
-  ensure_resource('package', 'python-openstackclient', {'ensure' => $package_ensure, tag => 'openstack'})
+  if $package_ensure == 'present' {
+  include '::openstacklib::openstackclient'
+    } else {
+  class { '::openstacklib::openstackclient':
+  package_ensure => $ensure,
+    }
+  }
 }
